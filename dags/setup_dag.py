@@ -11,7 +11,8 @@ dag = DAG('setup_database',
           start_date=datetime.datetime(2019,1,1)
         )
 
-#Create staging table for log data
+# Create staging table for log data
+
 create_logdata_table = PostgresOperator(
     task_id="create_logdata_table",
     dag=dag,
@@ -41,7 +42,8 @@ create_logdata_table = PostgresOperator(
     """
 )
 
-#Create staging table for song data
+# Create staging table for song data
+
 create_songdata_table = PostgresOperator(
     task_id="create_songdata_table",
     dag=dag,
@@ -62,6 +64,8 @@ create_songdata_table = PostgresOperator(
     );
     """
 )
+
+# Create table for song plays
 
 create_songplays_table = PostgresOperator(
     task_id="create_songplays_table",
@@ -84,6 +88,8 @@ create_songplays_table = PostgresOperator(
     """
 )
 
+# Create song table
+
 create_songs_table = PostgresOperator(
     task_id="create_songs_table",
     dag=dag,
@@ -100,6 +106,8 @@ create_songs_table = PostgresOperator(
     );
     """
 )
+
+# Create user table
 
 create_users_table = PostgresOperator(
     task_id="create_users_table",
@@ -118,6 +126,7 @@ create_users_table = PostgresOperator(
     """
 )
 
+# Create time table
 create_time_table = PostgresOperator(
     task_id="create_time_table",
     dag=dag,
@@ -137,6 +146,8 @@ create_time_table = PostgresOperator(
     """
 )
 
+# Create artists table
+
 create_artists_table = PostgresOperator(
     task_id="create_artists_table",
     dag=dag,
@@ -153,8 +164,11 @@ create_artists_table = PostgresOperator(
     """
 )
 
+# Start and end operators using the DummyOperator
 start_operator = DummyOperator(task_id='Begin_execution',  dag=dag)
 end_operator = DummyOperator(task_id='Stop_execution',  dag=dag)
+
+# Task dependencies
 
 start_operator >> create_logdata_table
 start_operator >> create_songdata_table
